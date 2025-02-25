@@ -17,10 +17,8 @@ router.route("/login").post(login);
     AccessType : @Private
     What it does: Route incoming request to -> Middleware -> desired controller
 */
-router.route("/logout").post(authMiddleware,logout);
+router.route("/logout").get(authMiddleware,logout);
 router.route("/repayment-schedule").post(authMiddleware,repaymentSchedule);
-
-
 
 
 
