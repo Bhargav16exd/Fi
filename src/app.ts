@@ -20,6 +20,22 @@ app.use(cors());
 app.use("/api/v1/user", userRouter);
 
 
+// Error Handler
+app.use((err:any,req:any ,res: any ,next:any)=>{
+
+    const statusCode = err.statusCode || 500 
+    const message    = err.message    || "Something went wrong"
+    const error      = err            
+
+    return res.status(statusCode).json({
+        statusCode,
+        message,
+        error
+    })
+    
+})
+
+
 
 /*
     Exports
