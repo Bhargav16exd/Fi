@@ -40,7 +40,7 @@ export const signup = async (req:any, res:any,next:any) =>{
 
         return res.status(201)
         .json(
-            new sucResponse(true,200,"User created successfully")
+            new sucResponse(true,201,"User created successfully")
         )
         
     } catch (error) {
@@ -53,13 +53,13 @@ export const signup = async (req:any, res:any,next:any) =>{
 export const login = async (req:any, res:any,next:any) => {
     try {
 
-        const {email, password} = req.body;
+        const {username, password} = req.body;
 
-        if(!email || !password){
+        if(!username || !password){
             throw new errResponse("Please provide all fields",400)
         }
 
-        const user = await User.findOne({email}).select("+password");
+        const user = await User.findOne({username}).select("+password");
 
         if(!user){
             throw new errResponse("Invalid credentials",400)
@@ -77,15 +77,16 @@ export const login = async (req:any, res:any,next:any) => {
         
 
         return res.status(200)
-        .json(
-            new sucResponse(true,200,"User logged in successfully",token)
-        )
         .cookie("token",token,{
             sameSite:"None",
             secure:true ,
             httpOnly:true ,
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
+        .json(
+            new sucResponse(true,200,"User logged in successfully",token)
+        )
+        
         
     } catch (error) {
         next(error)

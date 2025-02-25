@@ -6,21 +6,27 @@ export const authMiddleware = async (req:any,res:any,next:any)=>{
 
     try {
         
-          const {token}    = req.cookies
+          let {token} :any =""  
           const JWT_SECRET = process.env.JWT_SECRET as any 
-      //  const token = req.header("Authorization").split[" "] req.header("Authorization") gives single header req.headers give all headers 
 
+          if(req.cookie?.token){
+            token = req.cookies.token
+          }
+          else{
+            token = req.header("Authorization").split(" ")[1]
+          }
+      
           if(!token){
             throw new errResponse("Unauthenticated",400)
           }
 
-          const {_id} : any = jwt.verify(token,JWT_SECRET)
+          const {id} : any = jwt.verify(token,JWT_SECRET)
 
-          if(!_id){
+          if(!id){
             throw new errResponse("Unauthenticated",400)
           }
 
-          const user: any = await User.findById(_id)
+          const user: any = await User.findById(id)
 
           if(!user){
             throw new errResponse("User not found",400)
