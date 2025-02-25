@@ -2,6 +2,7 @@ import errResponse from "../utils/errResponse";
 import {User} from "../models/user.model";
 import sucResponse from "../utils/sucResponse";
 import crypto from "crypto";
+import { generateRepaymentSchedule } from "../utils/PaymentSchedule";
 
 
 export const signup = async (req:any, res:any,next:any) =>{
@@ -221,3 +222,22 @@ export const updatePassword = async (req:any, res:any,next:any) => {
         next(error)
     }
 }
+
+
+export const repaymentSchedule = async (req:any, res:any,next:any) => {
+    try {
+        const schedule = generateRepaymentSchedule(req.body);
+
+        if (schedule.length === 0){
+            return res.status(400).json(new sucResponse(true, 204, "Invalid input data"));
+        }
+
+        
+        return res.status(200).json(new sucResponse(true, 200, "Repayment schedule generated successfully", schedule));
+
+    } catch (error) {
+        res.status(400).json({ error: "Invalid input data" });
+    }
+} 
+
+

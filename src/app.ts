@@ -20,6 +20,7 @@ app.use(cors());
 app.use("/api/v1/user", userRouter);
 
 
+
 // Error Handler
 app.use((err:any,req:any ,res: any ,next:any)=>{
 

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { login, signup } from "../controllers/user.controller";
+import { login, logout, repaymentSchedule, signup } from "../controllers/user.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
@@ -10,6 +11,16 @@ const router = Router();
 */
 router.route("/signup").post(signup);
 router.route("/login").post(login);
+
+
+/*
+    AccessType : @Private
+    What it does: Route incoming request to -> Middleware -> desired controller
+*/
+router.route("/logout").post(authMiddleware,logout);
+router.route("/repayment-schedule").post(authMiddleware,repaymentSchedule);
+
+
 
 
 
